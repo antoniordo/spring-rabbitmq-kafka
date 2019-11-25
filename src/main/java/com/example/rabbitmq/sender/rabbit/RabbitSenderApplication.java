@@ -1,5 +1,6 @@
-package com.example.rabbitmq.sender;
+package com.example.rabbitmq.sender.rabbit;
 
+import com.example.rabbitmq.sender.SenderComponent;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -11,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableRabbit
 @EnableScheduling
 @SpringBootApplication
-public class SenderApplication {
+public class RabbitSenderApplication {
     
     @Bean
     public Queue hello() {
@@ -20,11 +21,11 @@ public class SenderApplication {
     
     @Bean
     public SenderComponent senderComponent(RabbitTemplate template, Queue queue) {
-        return new SenderComponent(template, queue);
+        return new SenderComponent(new RabbitMessageSender(template, queue));
     }
     
     public static void main(String[] args) {
-        SpringApplication.run(SenderApplication.class, args);
+        SpringApplication.run(RabbitSenderApplication.class, args);
     }
 
 }

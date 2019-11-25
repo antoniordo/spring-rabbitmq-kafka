@@ -1,22 +1,18 @@
 package com.example.rabbitmq.sender;
 
-import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class SenderComponent {
     
-    private RabbitTemplate template;
-    private Queue queue;
+    private AtomicInteger dots = new AtomicInteger(0);
+    private AtomicInteger count = new AtomicInteger(0);
     
-    AtomicInteger dots = new AtomicInteger(0);
-    AtomicInteger count = new AtomicInteger(0);
+    private MessageSender messageSender;
     
-    public SenderComponent(RabbitTemplate template, Queue queue) {
-        this.template = template;
-        this.queue = queue;
+    public SenderComponent(MessageSender messageSender) {
+        this.messageSender = messageSender;
     }
     
     @Scheduled(fixedDelay = 1000, initialDelay = 500)
@@ -30,7 +26,7 @@ public class SenderComponent {
         }
         builder.append(count.incrementAndGet());
         String message = builder.toString();
-        template.convertAndSend(queue.getName(), message);
+        messageSender.send(message);
         System.out.println(" [x] Sent '" + message + "'");
     }
     

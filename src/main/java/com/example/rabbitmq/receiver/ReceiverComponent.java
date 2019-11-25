@@ -1,24 +1,20 @@
 package com.example.rabbitmq.receiver;
 
-import org.springframework.amqp.rabbit.annotation.RabbitHandler;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.util.StopWatch;
 
-@RabbitListener(queues = "hello")
 public class ReceiverComponent {
     
-    private final int instance;
+    private final String instance;
     
     @Value("#{new Boolean('${worker.throwError}')}")
     private boolean throwError;
     
-    public ReceiverComponent(int i) {
-        this.instance = i;
+    public ReceiverComponent(String instanceId) {
+        this.instance = instanceId;
     }
     
-    @RabbitHandler
-    public void receive(String in) throws InterruptedException {
+    public void receive(String in) {
         System.out.println("throwError=" + throwError);
         StopWatch watch = new StopWatch();
         watch.start();
@@ -31,10 +27,14 @@ public class ReceiverComponent {
         System.out.println("instance " + this.instance + " [x] Done in " + watch.getTotalTimeSeconds() + "s");
     }
     
-    private void doWork(String in) throws InterruptedException {
+    private void doWork(String in) {
         for (char ch : in.toCharArray()) {
             if (ch == '.') {
-                Thread.sleep(1000);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
