@@ -1,8 +1,7 @@
 package com.example.rabbitmq.receiver.rabbit;
 
 import com.example.rabbitmq.receiver.ReceiverComponent;
-import com.example.rabbitmq.receiver.kafka.KafkaMessageListener;
-import org.apache.kafka.clients.admin.NewTopic;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,15 +14,15 @@ import java.util.UUID;
 public class RabbitReceiverApplication {
     
     @Bean
-    public NewTopic hello() {
-        return new NewTopic("hello", 1, (short) 1);
+    public Queue hello() {
+        return new Queue("hello");
     }
     
     @Bean
-    public KafkaMessageListener kafkaMessageHandler() {
-        return new KafkaMessageListener(new ReceiverComponent(UUID.randomUUID().toString()));
+    public RabbitMessageListener rabbitMessageListener() {
+        return new RabbitMessageListener(new ReceiverComponent(UUID.randomUUID().toString()));
     }
-
+    
     public static void main(String[] args) {
         SpringApplication.run(RabbitReceiverApplication.class, args);
     }

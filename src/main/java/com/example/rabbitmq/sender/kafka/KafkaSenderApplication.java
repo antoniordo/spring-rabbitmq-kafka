@@ -1,5 +1,6 @@
 package com.example.rabbitmq.sender.kafka;
 
+import com.example.rabbitmq.common.KafkaTopics;
 import com.example.rabbitmq.sender.SenderComponent;
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.boot.SpringApplication;
@@ -16,7 +17,7 @@ public class KafkaSenderApplication {
     
     @Bean
     public NewTopic hello() {
-        return new NewTopic("hello", 1, (short) 1);
+        return KafkaTopics.createHelloNewTopic();
     }
     
     @Bean

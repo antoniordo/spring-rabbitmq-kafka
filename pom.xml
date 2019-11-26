@@ -10,7 +10,7 @@
     </parent>
 
     <groupId>com.example.rabbitmq</groupId>
-    <artifactId>spring-rabbitmq</artifactId>
+    <artifactId>spring-rabbitmq-kafka</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>spring-rabbitmq</name>
     <description>Spring Boot wtih RabbitMQ Worker</description>
