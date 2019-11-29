@@ -8,20 +8,23 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.annotation.EnableKafka;
 
-import java.util.UUID;
-
 @EnableKafka
 @SpringBootApplication
 public class KafkaReceiverApplication {
     
-    @Bean
+    /*@Bean
     public NewTopic hello() {
         return KafkaTopics.createHelloNewTopic();
+    }*/
+    
+    @Bean
+    public ReceiverComponent receiverComponent() {
+        return new ReceiverComponent();
     }
     
     @Bean
-    public KafkaMessageListener kafkaMessageHandler() {
-        return new KafkaMessageListener(new ReceiverComponent(UUID.randomUUID().toString()));
+    public KafkaMessageListener kafkaMessageHandler(ReceiverComponent receiverComponent) {
+        return new KafkaMessageListener(receiverComponent);
     }
     
     public static void main(String[] args) {

@@ -5,26 +5,20 @@ import org.springframework.util.StopWatch;
 
 public class ReceiverComponent {
     
-    private final String instance;
-    
     @Value("#{new Boolean('${worker.throwError}')}")
     private boolean throwError;
-    
-    public ReceiverComponent(String instanceId) {
-        this.instance = instanceId;
-    }
     
     public void receive(String in) {
         System.out.println("throwError=" + throwError);
         StopWatch watch = new StopWatch();
         watch.start();
-        System.out.println("instance " + this.instance + " [x] Received '" + in + "'");
+        System.out.println(" [x] Received '" + in + "'");
         doWork(in);
         watch.stop();
-        if (throwError) {
+        if (new Boolean(throwError)) {
             throw new RuntimeException("Error thrown on queue message: " + in);
         }
-        System.out.println("instance " + this.instance + " [x] Done in " + watch.getTotalTimeSeconds() + "s");
+        System.out.println(" [x] Done in " + watch.getTotalTimeSeconds() + "s");
     }
     
     private void doWork(String in) {

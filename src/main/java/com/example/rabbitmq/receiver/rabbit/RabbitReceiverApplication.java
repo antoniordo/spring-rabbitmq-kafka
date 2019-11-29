@@ -19,8 +19,13 @@ public class RabbitReceiverApplication {
     }
     
     @Bean
+    public ReceiverComponent receiverComponent() {
+        return new ReceiverComponent();
+    }
+    
+    @Bean
     public RabbitMessageListener rabbitMessageListener() {
-        return new RabbitMessageListener(new ReceiverComponent(UUID.randomUUID().toString()));
+        return new RabbitMessageListener(receiverComponent());
     }
     
     public static void main(String[] args) {

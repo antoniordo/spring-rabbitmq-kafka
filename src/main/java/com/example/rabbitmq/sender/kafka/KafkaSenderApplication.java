@@ -15,10 +15,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 public class KafkaSenderApplication {
     
-    @Bean
+    /*@Bean
     public NewTopic hello() {
         return KafkaTopics.createHelloNewTopic();
-    }
+    }*/
     
     @Bean
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
